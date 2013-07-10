@@ -2,6 +2,10 @@
 #pragma comment(lib, "glu32.lib")
 #pragma comment(lib, "glut32.lib")
 
+#define ANGLE 0.2
+#define SCALE 0.9
+#define RAND 0.01
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -17,6 +21,7 @@
 #include "imageloader.h"
 #include "vec3f.h"
 #endif
+
 
 static GLfloat spin, spin2 = 0.0;
 float angle = 0;
@@ -182,6 +187,34 @@ public:
 };
 //end class
 
+float myrand(float R)
+{
+   return (2 * R * rand()) / RAND_MAX - R;
+}
+
+//---------------------------------------
+// Recursive function to create trees
+//---------------------------------------
+void tree(float x1, float y1, float length1, float angle1, int depth)
+{
+   if (depth > 0)
+   {
+      // Draw line segment
+      float x2 = x1 + length1 * cos(angle1);
+      float y2 = y1 + length1 * sin(angle1);
+      glVertex2f(x1, y1);
+      glVertex2f(x2, y2);
+
+      // Make two recursive calls
+      float length2 = length1 * (SCALE + myrand(RAND));
+      float angle2 = angle1 + ANGLE + myrand(RAND);
+      tree(x2, y2, length2, angle2, depth-1);
+      length2 = length1 * (SCALE + myrand(RAND));
+      angle2 = angle1 - ANGLE + myrand(RAND);
+      tree(x2, y2, length2, angle2, depth-1);
+   }
+}
+
 
 void initRendering() {
 	glEnable(GL_DEPTH_TEST);
@@ -303,6 +336,14 @@ void display(void) {
 	//glBindTexture(GL_TEXTURE_3D, texture[0]);
 	drawSceneTanah(_terrainAir, 0.0f, 0.2f, 0.5f);
 	glPopMatrix();
+	glPushMatrix();
+
+//		   glClear(GL_COLOR_BUFFER_BIT);
+		   glColor3f(0.0, 1.0, 0.0);
+		   glBegin(GL_LINES);
+				tree(0, -80, 20, 1.5, 10);
+		   glEnd();
+		   glPopMatrix();
 
 	glutSwapBuffers();
 	glFlush();
