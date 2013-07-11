@@ -23,6 +23,8 @@
 #endif
 
 
+GLfloat theta[] = {0.0,0.0,0.0};
+int r=-50;
 static GLfloat spin, spin2 = 0.0;
 float angle = 0;
 using namespace std;
@@ -215,6 +217,41 @@ void tree(float x1, float y1, float length1, float angle1, int depth)
    }
 }
 
+void pohon(void){
+//batang
+GLUquadricObj *pObj;
+pObj =gluNewQuadric();
+gluQuadricNormals(pObj, GLU_SMOOTH);    
+
+glPushMatrix();
+glColor3ub(104,70,14);
+glRotatef(270,1,0,0);
+gluCylinder(pObj, 4, 0.7, 30, 25, 25);
+glPopMatrix();
+}
+
+//ranting  
+void ranting(void){
+GLUquadricObj *pObj;
+pObj =gluNewQuadric();
+gluQuadricNormals(pObj, GLU_SMOOTH); 
+glPushMatrix();
+glColor3ub(104,70,14);
+glTranslatef(0,27,0);
+glRotatef(330,1,0,0);
+gluCylinder(pObj, 0.6, 0.1, 15, 25, 25);
+glPopMatrix();
+
+//daun
+glPushMatrix();
+glColor3ub(18,118,13);
+glScaled(5, 5, 5);
+glTranslatef(0,7,3);
+glutSolidIcosahedron();
+glPopMatrix();
+}
+
+
 
 void initRendering() {
 	glEnable(GL_DEPTH_TEST);
@@ -319,6 +356,10 @@ void display(void) {
 	glLoadIdentity();
 	gluLookAt(viewx, viewy, viewz, 0.0, 0.0, 5.0, 0.0, 1.0, 0.0);
 
+
+
+
+
 	glPushMatrix();
 
 	//glBindTexture(GL_TEXTURE_3D, texture[0]);
@@ -339,11 +380,40 @@ void display(void) {
 	glPushMatrix();
 
 //		   glClear(GL_COLOR_BUFFER_BIT);
-		   glColor3f(0.0, 1.0, 0.0);
-		   glBegin(GL_LINES);
-				tree(0, -80, 20, 1.5, 10);
-		   glEnd();
+		   //glColor3f(0.0, 1.0, 0.0);
+		   //glBegin(GL_LINES);
+			//	tree(0, -80, 20, 1.5, 10);
+		   //glEnd();
 		   glPopMatrix();
+		   
+		   //pohon2
+glPushMatrix();
+glTranslatef(35,0.5,-10);    
+glScalef(0.5, 0.5, 0.5);
+glRotatef(90,0,1,0);
+pohon();
+glPopMatrix();
+
+//ranting1
+ranting();
+
+//ranting2
+glPushMatrix();
+glScalef(1.5, 1.5, 1.5);
+glTranslatef(0,25,25);   
+glRotatef(250,1,0,0);
+ranting();
+glPopMatrix();
+
+//ranting3
+glPushMatrix();
+glScalef(1.8, 1.8, 1.8);
+glTranslatef(0,-6,21.5);   
+glRotatef(-55,1,0,0);
+ranting();
+glPopMatrix();
+
+
 
 	glutSwapBuffers();
 	glFlush();
