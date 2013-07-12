@@ -71,6 +71,241 @@ struct Images {//tempat image
 typedef struct Images Images;
 
 
+void kapal()
+{
+	glBegin(GL_QUADS);           
+	glColor3f(.54,.27,.07);
+	glVertex3f(-.4*r,.2*r,-.2*r);     
+	glVertex3f(.4*r,.2*r,-.2*r);
+	glVertex3f(.4*r,0.1*r,-.15*r);
+	glVertex3f(-.4*r,0.1*r,-.15*r);
+	glEnd();
+	
+	glBegin(GL_QUADS);
+	glColor3f(0.35,0.77,0.38);
+	glVertex3f(-.4*r,0.1*r,.15*r);       
+	glVertex3f(.4*r,0.1*r,.15*r);
+	glVertex3f(.4*r,.2*r,.2*r);
+	glVertex3f(-.4*r,.2*r,.2*r);
+	glEnd();
+
+
+        	glBegin(GL_QUADS);           
+     	glColor3f(0.41,0.41,0.41);       
+	 
+	glVertex3f(-.4*r,.1*r,-.15*r);
+	glVertex3f(.4*r,.1*r,-.15*r);
+	glVertex3f(.4*r,-.2*r,0.0*r);
+        	glVertex3f(-.4*r,-.2*r,0.0*r);
+	glEnd();
+	
+	glBegin(GL_QUADS);
+	glColor3f(0.61,0.61,0.61);
+	glVertex3f(-.4*r,-.2*r,0.0*r);        
+        	glVertex3f(.4*r,-.2*r,0.0*r);
+        	glVertex3f(.4*r,.1*r,.15*r);
+        	glVertex3f(-.4*r,.1*r,.15*r);
+	glEnd();
+	
+        	glBegin(GL_QUADS);
+	glColor3f(0.60,0.16,0.42);
+	glVertex3f(-.6*r,.2*r,0.0*r);               
+	glVertex3f(-.4*r,.2*r,-.2*r);
+        glVertex3f(-.4*r,.1*r,-.15*r);           
+		glVertex3f(-.555*r,.1*r,0.0);
+	glEnd();
+
+        	glBegin(GL_QUADS);
+	glColor3f(0.80,0.26,0.12);
+	glVertex3f(-.555*r,.1*r,0.0*r);              
+        	glVertex3f(-.4*r,.1*r,.15*r);
+        	glVertex3f(-.4*r,.2*r,.2*r);
+        	glVertex3f(-.6*r,.2*r,0.0*r);
+	glEnd();
+
+
+        	glBegin(GL_QUADS);
+	glColor3f(0.70,0.46,0.82);
+        	glVertex3f(.555*r,.1*r,0.0*r);             
+        	glVertex3f(.4*r,.1*r,-.15*r);
+        	glVertex3f(.4*r,.2*r,-.2*r);               
+	glVertex3f(.6*r,.2*r,0.0*r);
+        	glEnd();
+       
+        
+        
+        	glBegin(GL_QUADS);
+	glColor3f(0.30,0.96,0.42);
+        	glVertex3f(.6*r,.2*r,0.0*r);                
+			glVertex3f(.4*r,.2*r,.2*r);
+        	glVertex3f(.4*r,.1*r,.15*r);
+	glVertex3f(.555*r,.1*r,0.0*r);
+        	glEnd();
+
+	
+
+
+        	glBegin(GL_TRIANGLES);                
+	glColor3f(0.6f, 0.7f, 0.5f);
+	glVertex3f(-.555*r,.1*r,-0*r);                 
+	glVertex3f(-.4*r,.1*r,-.15*r);
+	glVertex3f(-.4*r,-.2*r,-0.0*r);
+	glEnd();
+
+         	glBegin(GL_TRIANGLES);
+	glColor3f(0.4f, 0.6f, 0.4f);
+        	glVertex3f(-.4*r,-.2*r,0.0*r);        
+	glVertex3f(-.4*r,.1*r,.15*r);
+	glVertex3f(-.555*r,.1*r,0*r);
+	glEnd();
+
+
+        	glBegin(GL_TRIANGLES);               
+        	glColor3f(0.7f, 0.7f, 0.3f);
+        	glVertex3f(.4*r,-.2*r,-0.0*r);       
+        	glVertex3f(.4*r,.1*r,-.15*r);
+	glVertex3f(.555*r,.1*r,-0*r);
+	glEnd();
+	
+	
+
+        	glBegin(GL_TRIANGLES);
+	glColor3f(0.5f, 0.7f, 0.2f);
+        	glVertex3f(.555*r,.1*r,0*r);         
+        	glVertex3f(.4*r,.1*r,.15*r);
+        	glVertex3f(.4*r,-.2*r,0.0*r);
+	glEnd();
+
+	glBegin(GL_POLYGON);
+	glColor3f(0.0f, 0.0f, 0.0f);
+	glVertex3f(.555*r,.1*r,0*r);
+	glVertex3f(.4*r,.1*r,-0.15*r);
+	glVertex3f(-0.4*r,.1*r,-0.15*r);
+	glVertex3f(-.555*r,.1*r,0*r);
+	glVertex3f(-0.4*r,.1*r,.15*r);
+	glVertex3f(.4*r,.1*r,0.15*r);
+	glEnd();
+
+	glBegin(GL_QUADS);                       
+	glColor3f(0.30,0.96,0.42);
+	glVertex3f(-.2,.3,.1);                   
+    	glVertex3f(-.2,.1,.1);               
+		glVertex3f(-.1,.1,.1);
+    	glVertex3f(-.1,.3,.1);
+	glEnd();
+
+	glBegin(GL_QUADS);
+	glColor3f(0.30,0.96,0.42);
+	glVertex3f(-.2*r,.3*r,-.1*r);
+    	glVertex3f(-.2*r,.1*r,-.1*r);                
+    	glVertex3f(-.1*r,.1*r,-.1*r);
+    	glVertex3f(-.1*r,.3*r,-.1*r);
+	glEnd();
+
+	glBegin(GL_QUADS);
+	glColor3f(0.30,0.96,0.42);
+	glVertex3f(-.2*r,.1*r,.1*r);
+    	glVertex3f(-.2*r,.3*r,.1*r);                
+    	glVertex3f(-.2*r,.3*r,-.1*r);
+    	glVertex3f(-.2*r,.1*r,-.1*r);
+	glEnd();
+
+
+	glBegin(GL_QUADS);
+	glColor3f(0.30,0.96,0.42);
+	glVertex3f(-.1*r,.1*r,.1*r);
+    	glVertex3f(-.1*r,.3*r,.1*r);                
+    	glVertex3f(-.1*r,.3*r,-.1*r);
+    	glVertex3f(-.1*r,.1*r,-.1*r);
+	glEnd();
+	
+
+	glBegin(GL_QUADS);
+	glColor3f(0.30,0.96,0.42);
+	glVertex3f(-.2*r,.3*r,.1*r);
+    	glVertex3f(-.1*r,.3*r,.1*r);                
+    	glVertex3f(-.1*r,.3*r,-.1*r);
+    	glVertex3f(-.2*r,.3*r,-.1*r);
+	glEnd();
+	
+
+    	glBegin(GL_QUADS);                     
+	glColor3f(0.30,0.36,0.42);
+	glVertex3f(-.1*r,.3*r,.1*r);
+    	glVertex3f(.3*r,.3*r,.1*r);                
+    	glVertex3f(.3*r,0.1*r,.1*r);
+    	glVertex3f(-.1*r,.1*r,.1*r);
+	glEnd();
+
+	glBegin(GL_QUADS);
+	glColor3f(1.00,0.0,0.0);
+	glVertex3f(-.1*r,.3*r,-.1*r);
+    	glVertex3f(.3*r,.3*r,-.1*r);                
+    	glVertex3f(.3*r,0.1*r,-.1*r);
+    	glVertex3f(-.1*r,.1*r,-.1*r);
+	glEnd();
+
+	glBegin(GL_QUADS);
+	glColor3f(0.0,1.0,0.0);
+	glVertex3f(.3*r,.3*r,.1*r);
+    	glVertex3f(.3*r,.3*r,-.1*r);                
+    	glVertex3f(.3*r,.1*r,-.1*r); 
+    	glVertex3f(.3*r,.1*r,.1*r);
+	glEnd();
+
+    	glBegin(GL_QUADS);
+	glColor3f(0.30,0.36,0.12);
+	glVertex3f(-.1*r,.3*r,.1*r);
+    	glVertex3f(-.1*r,.3*r,-.1*r);                
+    	glVertex3f(.3*r,.3*r,-.1*r); 
+    	glVertex3f(.3*r,.3*r,.1*r);
+	glEnd();                         
+
+	glBegin(GL_QUADS);             
+	glColor3f(0.30,0.36,0.12);
+	glVertex3f(-.08*r,.4*r,.07*r);
+    glVertex3f(-.08*r,.4*r,-.07*r);                
+    glVertex3f(-.08*r,.3*r,-.07*r); 
+    glVertex3f(-.08*r,.3*r,.07*r);
+	glEnd();
+
+	glBegin(GL_QUADS);             
+	glColor3f(0.30,0.36,0.12);
+	glVertex3f(.27*r,.4*r,.07*r);
+    glVertex3f(.27*r,.4*r,-.07*r);                
+                   
+    glVertex3f(.27*r,.3*r,-.07*r); 
+    glVertex3f(.27*r,.3*r,.07*r);
+	glEnd();
+
+
+    glBegin(GL_QUADS);
+	glColor3f(1.00,0.56,0.12);
+	glVertex3f(-.08*r,.4*r,.07*r);
+    glVertex3f(.27*r,.4*r,.07*r);                
+    glVertex3f(.27*r,.3*r,.07*r); 
+    glVertex3f(-.08*r,.3*r,.07*r);
+	glEnd();
+
+	glBegin(GL_QUADS);
+	glColor3f(0.30,0.36,0.12);
+	glVertex3f(-.08*r,.4*r,-.07*r);
+    glVertex3f(.27*r,.4*r,-.07*r);                
+    glVertex3f(.27*r,.3*r,-.07*r); 
+    glVertex3f(-.08*r,.3*r,-.07*r);
+	glEnd();
+
+
+	glBegin(GL_QUADS);
+	glColor3f(5.0,0.0,0.0);
+	glVertex3f(-0.08*r,.4*r,.07*r);
+	glVertex3f(-0.08*r,.4*r,-.07*r);
+    glVertex3f(.27*r,.4*r,-.07*r);                
+    glVertex3f(.27*r,.4*r,.07*r); 
+   	glEnd();
+
+	                                
+}
 
 
 
