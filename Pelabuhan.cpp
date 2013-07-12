@@ -56,7 +56,7 @@ static int viewz = 80;
 
 float rot = 0;
 
-GLuint texture[1]; //array untuk texture
+GLuint texture[2]; //array untuk texture
 GLuint SkyboxTexture[6]; 
 
 //Reader obj;
@@ -387,7 +387,40 @@ glPopMatrix();
 
 }     
 
+void pohon_bind(){
+     
+     		   //pohon1
+glPushMatrix();
 
+glTranslatef(0.1,15,0);    
+glScalef(0.5, 0.5, 0.5);
+glRotatef(90,0,1,0);
+pohon();
+glPopMatrix();
+
+//ranting1
+glPushMatrix();
+ranting();
+glPopMatrix();
+
+//ranting2
+glPushMatrix();
+glScalef(1.5, 1.5, 1.5);
+glTranslatef(0,25,25);   
+glRotatef(250,1,0,0);
+ranting();
+glPopMatrix();
+
+//ranting3
+glPushMatrix();
+glScalef(1.8, 1.8, 1.8);
+glTranslatef(0,-6,21.5);   
+glRotatef(-55,1,0,0);
+ranting();
+glPopMatrix();
+
+//-------------------//
+}
 
 void initRendering() {
 	glEnable(GL_DEPTH_TEST);
@@ -635,6 +668,23 @@ Images * loadTextureSky6() {
 }
 //--------------
 
+//mengambil tekstur
+Images * loadTexture2() {
+	Images *image2;
+	// alokasi memmory untuk tekstur
+	image2 = (Images *) malloc(sizeof(Images));
+	if (image2== NULL) {
+		printf("Error allocating space for image");//memory tidak cukup
+		exit(0);
+	}
+	//pic.bmp is a 64x64 picture
+	if (!ImageLoad("biru.bmp", image2)) {
+		exit(1);
+	}
+	return image2;
+}
+//--------------
+
 void Draw_Skybox(float x, float y, float z, float width, float height, float length)
 {
 	// Center the Skybox around the given x,y,z position
@@ -801,66 +851,26 @@ void display(void) {
 		   //glEnd();
 		   //glPopMatrix();
 		   
+
+
+//-------------------//
 		   //pohon1
 glPushMatrix();
-
-glTranslatef(0.1,15,0);    
+glTranslatef(-70,-8,-100);    
 glScalef(0.5, 0.5, 0.5);
-glRotatef(90,0,1,0);
-pohon();
+//glRotatef(90,0,1,0);
+pohon_bind();
 glPopMatrix();
 
-//ranting1
-glPushMatrix();
-ranting();
-glPopMatrix();
-
-//ranting2
-glPushMatrix();
-glScalef(1.5, 1.5, 1.5);
-glTranslatef(0,25,25);   
-glRotatef(250,1,0,0);
-ranting();
-glPopMatrix();
-
-//ranting3
-glPushMatrix();
-glScalef(1.8, 1.8, 1.8);
-glTranslatef(0,-6,21.5);   
-glRotatef(-55,1,0,0);
-ranting();
-glPopMatrix();
-
-//-------------------//
 		   //pohon2
 glPushMatrix();
-glTranslatef(-50,0,-100);    
-glScalef(0.2, 0.2, 0.2);
-glRotatef(90,0,1,0);
-pohon();
+glTranslatef(-40,-8,-100);    
+glScalef(0.5, 0.5, 0.5);
+//glRotatef(90,0,1,0);
+pohon_bind();
 glPopMatrix();
 
-//ranting1
-glPushMatrix();
-ranting();
-glPopMatrix();
 
-//ranting2
-glPushMatrix();
-glScalef(1.5, 1.5, 1.5);
-glTranslatef(0,50,25);   
-glRotatef(250,1,0,0);
-ranting();
-glPopMatrix();
-
-//ranting3
-glPushMatrix();
-glScalef(1.8, 1.8, 1.8);
-glTranslatef(0,-6,21.5);   
-glRotatef(-55,1,0,0);
-ranting();
-glPopMatrix();
-//-------------------//
 
 
 //batas
@@ -891,18 +901,41 @@ glPopMatrix();
 
 
 
-//box
+//box1
 glPushMatrix();
 glEnable(GL_TEXTURE_2D);
 glBindTexture(GL_TEXTURE_2D, texture[0]);
 
-glScalef(1.5, 1.5, 1.5);
-glTranslatef(0,25,25);   
-glRotatef(250,1,0,0);
+glScalef(7, 5, 5);
+glTranslatef(-5,1,10);   
+glRotatef(0,1,0,0);
 box();
 glDisable(GL_TEXTURE_2D);
 glPopMatrix();
 
+//box2
+glPushMatrix();
+glEnable(GL_TEXTURE_2D);
+glBindTexture(GL_TEXTURE_2D, texture[0]);
+
+glScalef(7, 5, 5);
+glTranslatef(-5,1,15);   
+glRotatef(0,1,0,0);
+box();
+glDisable(GL_TEXTURE_2D);
+glPopMatrix();
+
+//box2
+glPushMatrix();
+glEnable(GL_TEXTURE_2D);
+glBindTexture(GL_TEXTURE_2D, texture[0]);
+
+glScalef(7, 5, 5);
+glTranslatef(-5,1,20);   
+glRotatef(0,1,0,0);
+box();
+glDisable(GL_TEXTURE_2D);
+glPopMatrix();
 
 //obj.draw("data//1.obj");
 
@@ -956,6 +989,7 @@ void init(void) {
 
 	//binding texture
 	Images *image1 = loadTexture();
+	Images *image2 = loadTexture2();
 	
 	Images *imageSky1 = loadTextureSky1();
 	Images *imageSky2 = loadTextureSky2();
@@ -974,7 +1008,7 @@ void init(void) {
 	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 
 	// Generate texture/ membuat texture
-	glGenTextures(1, texture);
+	glGenTextures(2, texture);
 	//binding texture untuk membuat texture 2D
 	glBindTexture(GL_TEXTURE_2D, texture[0]);
 	//menyesuaikan ukuran textur ketika image lebih besar dari texture
@@ -982,6 +1016,13 @@ void init(void) {
 	//menyesuaikan ukuran textur ketika image lebih kecil dari texture
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST); //
 	glTexImage2D(GL_TEXTURE_2D, 0, 3, image1->sizeX, image1->sizeY, 0, GL_RGB,GL_UNSIGNED_BYTE, image1->data);
+	
+	glBindTexture(GL_TEXTURE_2D, texture[6]);
+	//menyesuaikan ukuran textur ketika image lebih besar dari texture
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST); //
+	//menyesuaikan ukuran textur ketika image lebih kecil dari texture
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST); //
+	glTexImage2D(GL_TEXTURE_2D, 0, 3, image2->sizeX, image2->sizeY, 0, GL_RGB,GL_UNSIGNED_BYTE, image2->data);
 	
 	glGenTextures(6, SkyboxTexture);
 	//front
