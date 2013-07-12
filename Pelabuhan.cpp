@@ -20,6 +20,25 @@
 #include <gl/gl.h>
 #include "imageloader.h"
 #include "vec3f.h"
+//#include "reader.h"
+
+#include <iostream>
+#include <fstream>
+#include <stdio.h>
+#include <string.h>
+
+
+
+#include <iostream>
+#include <sstream>
+#include <fstream>
+#include <string>
+#include <vector>
+#include <cmath>
+ 
+#define KEY_ESCAPE 27
+ 
+using namespace std;
 #endif
 
 
@@ -36,6 +55,25 @@ static int viewy = 24;
 static int viewz = 80;
 
 float rot = 0;
+
+GLuint texture[2]; //array untuk texture
+GLuint SkyboxTexture[6]; 
+
+//Reader obj;
+
+//float g_rotation;
+
+struct Images {//tempat image
+	unsigned long sizeX;
+	unsigned long sizeY;
+	char *data;
+};
+typedef struct Images Images;
+
+
+
+
+
 
 //train 2D
 //class untuk terain 2D
@@ -225,8 +263,12 @@ gluQuadricNormals(pObj, GLU_SMOOTH);
 
 glPushMatrix();
 glColor3ub(104,70,14);
+//glEnable(GL_TEXTURE_2D);
+//glEnable(GL_TEXTURE_2D);
+//glBindTexture(GL_TEXTURE_2D, texture[0]);
 glRotatef(270,1,0,0);
 gluCylinder(pObj, 4, 0.7, 30, 25, 25);
+
 glPopMatrix();
 }
 
@@ -250,8 +292,135 @@ glTranslatef(0,7,3);
 glutSolidIcosahedron();
 glPopMatrix();
 }
+void box(void){
+     //glBindTexture(GL_TEXTURE_2D, texture[0]);
+     
+     glBegin(GL_QUADS);
+		// Front Face
+		glNormal3f( 0.0f, 0.0f, 1.0f);
+		glTexCoord2f(0.0f, 0.0f); glVertex3f(-1.0f, -1.0f,  1.0f);
+		glTexCoord2f(1.0f, 0.0f); glVertex3f( 1.0f, -1.0f,  1.0f);
+		glTexCoord2f(1.0f, 1.0f); glVertex3f( 1.0f,  1.0f,  1.0f);
+		glTexCoord2f(0.0f, 1.0f); glVertex3f(-1.0f,  1.0f,  1.0f);
+		// Back Face
+		glNormal3f( 0.0f, 0.0f,-1.0f);
+		glTexCoord2f(1.0f, 0.0f); glVertex3f(-1.0f, -1.0f, -1.0f);
+		glTexCoord2f(1.0f, 1.0f); glVertex3f(-1.0f,  1.0f, -1.0f);
+		glTexCoord2f(0.0f, 1.0f); glVertex3f( 1.0f,  1.0f, -1.0f);
+		glTexCoord2f(0.0f, 0.0f); glVertex3f( 1.0f, -1.0f, -1.0f);
+		// Top Face
+		glNormal3f( 0.0f, 1.0f, 0.0f);
+		glTexCoord2f(0.0f, 1.0f); glVertex3f(-1.0f,  1.0f, -1.0f);
+		glTexCoord2f(0.0f, 0.0f); glVertex3f(-1.0f,  1.0f,  1.0f);
+		glTexCoord2f(1.0f, 0.0f); glVertex3f( 1.0f,  1.0f,  1.0f);
+		glTexCoord2f(1.0f, 1.0f); glVertex3f( 1.0f,  1.0f, -1.0f);
+		// Bottom Face
+		glNormal3f( 0.0f,-1.0f, 0.0f);
+		glTexCoord2f(1.0f, 1.0f); glVertex3f(-1.0f, -1.0f, -1.0f);
+		glTexCoord2f(0.0f, 1.0f); glVertex3f( 1.0f, -1.0f, -1.0f);
+		glTexCoord2f(0.0f, 0.0f); glVertex3f( 1.0f, -1.0f,  1.0f);
+		glTexCoord2f(1.0f, 0.0f); glVertex3f(-1.0f, -1.0f,  1.0f);
+		// Right face
+		glNormal3f( 1.0f, 0.0f, 0.0f);
+		glTexCoord2f(1.0f, 0.0f); glVertex3f( 1.0f, -1.0f, -1.0f);
+		glTexCoord2f(1.0f, 1.0f); glVertex3f( 1.0f,  1.0f, -1.0f);
+		glTexCoord2f(0.0f, 1.0f); glVertex3f( 1.0f,  1.0f,  1.0f);
+		glTexCoord2f(0.0f, 0.0f); glVertex3f( 1.0f, -1.0f,  1.0f);
+		// Left Face
+		glNormal3f(-1.0f, 0.0f, 0.0f);
+		glTexCoord2f(0.0f, 0.0f); glVertex3f(-1.0f, -1.0f, -1.0f);
+		glTexCoord2f(1.0f, 0.0f); glVertex3f(-1.0f, -1.0f,  1.0f);
+		glTexCoord2f(1.0f, 1.0f); glVertex3f(-1.0f,  1.0f,  1.0f);
+		glTexCoord2f(0.0f, 1.0f); glVertex3f(-1.0f,  1.0f, -1.0f);
+	glEnd();
+     
+     
+}
+void awan(void){
+glPushMatrix(); 
+glColorMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE);
+glTranslatef(75, -10, 120);
+glScalef(0.5, 0.5, 0.5);  
+glColor3ub(153, 223, 255);
+glutSolidSphere(10, 50, 50);
+glPopMatrix(); 
+   
+glPushMatrix(); 
+glColorMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE);
+glTranslatef(60, -11, 120);
+glScalef(0.3, 0.3, 0.3);  
+glColor3ub(153, 223, 255);
+glutSolidSphere(10, 50, 50);
+glPopMatrix(); 
 
+glPushMatrix(); 
+glColorMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE);
+glTranslatef(50, -11, 120);
+glScalef(0.3, 0.3, 0.3);  
+glColor3ub(153, 223, 255);
+glutSolidSphere(10, 50, 50);
+glPopMatrix(); 
 
+glPushMatrix(); 
+glColorMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE);
+glTranslatef(40, -11, 120);
+glScalef(0.3, 0.3, 0.3);  
+glColor3ub(153, 223, 255);
+glutSolidSphere(10, 50, 50);
+glPopMatrix(); 
+
+glPushMatrix(); 
+glColorMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE);
+glTranslatef(30, -11, 120);
+glScalef(0.3, 0.3, 0.3);  
+glColor3ub(153, 223, 255);
+glutSolidSphere(10, 50, 50);
+glPopMatrix();  
+
+glPushMatrix(); 
+glColorMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE);
+glTranslatef(20, -11, 120);
+glScalef(0.3, 0.3, 0.3);  
+glColor3ub(153, 223, 255);
+glutSolidSphere(10, 50, 50);
+glPopMatrix();      
+
+}     
+
+void pohon_bind(){
+     
+     		   //pohon1
+glPushMatrix();
+
+glTranslatef(0.1,15,0);    
+glScalef(0.5, 0.5, 0.5);
+glRotatef(90,0,1,0);
+pohon();
+glPopMatrix();
+
+//ranting1
+glPushMatrix();
+ranting();
+glPopMatrix();
+
+//ranting2
+glPushMatrix();
+glScalef(1.5, 1.5, 1.5);
+glTranslatef(0,25,25);   
+glRotatef(250,1,0,0);
+ranting();
+glPopMatrix();
+
+//ranting3
+glPushMatrix();
+glScalef(1.8, 1.8, 1.8);
+glTranslatef(0,-6,21.5);   
+glRotatef(-55,1,0,0);
+ranting();
+glPopMatrix();
+
+//-------------------//
+}
 
 void initRendering() {
 	glEnable(GL_DEPTH_TEST);
@@ -306,6 +475,280 @@ void cleanup() {
 	//delete _terrainTanah;
 }
 
+
+//------------
+//mengambil gambar BMP
+int ImageLoad(char *filename, Images *image) {
+	FILE *file;
+	unsigned long size; // ukuran image dalam bytes
+	unsigned long i; // standard counter.
+	unsigned short int plane; // number of planes in image
+
+	unsigned short int bpp; // jumlah bits per pixel
+	char temp; // temporary color storage for var warna sementara untuk memastikan filenya ada
+
+
+	if ((file = fopen(filename, "rb")) == NULL) {
+		printf("File Not Found : %s\n", filename);
+		return 0;
+	}
+	// mencari file header bmp
+	fseek(file, 18, SEEK_CUR);
+	// read the width
+	if ((i = fread(&image->sizeX, 4, 1, file)) != 1) {//lebar beda
+		printf("Error reading width from %s.\n", filename);
+		return 0;
+	}
+	//printf("Width of %s: %lu\n", filename, image->sizeX);
+	// membaca nilai height
+	if ((i = fread(&image->sizeY, 4, 1, file)) != 1) {//tingginya beda
+		printf("Error reading height from %s.\n", filename);
+		return 0;
+	}
+	//printf("Height of %s: %lu\n", filename, image->sizeY);
+	//menghitung ukuran image(asumsi 24 bits or 3 bytes per pixel).
+
+	size = image->sizeX * image->sizeY * 3;
+	// read the planes
+	if ((fread(&plane, 2, 1, file)) != 1) {
+		printf("Error reading planes from %s.\n", filename);//bukan file bmp
+		return 0;
+	}
+	if (plane != 1) {
+		printf("Planes from %s is not 1: %u\n", filename, plane);//
+		return 0;
+	}
+	// read the bitsperpixel
+	if ((i = fread(&bpp, 2, 1, file)) != 1) {
+		printf("Error reading bpp from %s.\n", filename);
+
+		return 0;
+	}
+	if (bpp != 24) {
+		printf("Bpp from %s is not 24: %u\n", filename, bpp);//bukan 24 pixel
+		return 0;
+	}
+	// seek past the rest of the bitmap header.
+	fseek(file, 24, SEEK_CUR);
+	// read the data.
+	image->data = (char *) malloc(size);
+	if (image->data == NULL) {
+		printf("Error allocating memory for color-corrected image data");//gagal ambil memory
+		return 0;
+	}
+	if ((i = fread(image->data, size, 1, file)) != 1) {
+		printf("Error reading image data from %s.\n", filename);
+		return 0;
+	}
+	for (i = 0; i < size; i += 3) { // membalikan semuan nilai warna (gbr - > rgb)
+		temp = image->data[i];
+		image->data[i] = image->data[i + 2];
+		image->data[i + 2] = temp;
+	}
+	// we're done.
+	return 1;
+}
+
+//mengambil tekstur
+Images * loadTexture() {
+	Images *image1;
+	// alokasi memmory untuk tekstur
+	image1 = (Images *) malloc(sizeof(Images));
+	if (image1 == NULL) {
+		printf("Error allocating space for image");//memory tidak cukup
+		exit(0);
+	}
+	//pic.bmp is a 64x64 picture
+	if (!ImageLoad("images.bmp", image1)) {
+		exit(1);
+	}
+	return image1;
+}
+//--------------
+
+//mengambil tekstur
+Images * loadTextureSky1() {
+	Images *imageSky1;
+	// alokasi memmory untuk tekstur
+	imageSky1 = (Images *) malloc(sizeof(Images));
+	if (imageSky1 == NULL) {
+		printf("Error allocating space for image");//memory tidak cukup
+		exit(0);
+	}
+	//pic.bmp is a 64x64 picture
+	if (!ImageLoad("front.bmp", imageSky1)) {
+		exit(1);
+	}
+	return imageSky1;
+}
+//--------------
+
+//mengambil tekstur
+Images * loadTextureSky2() {
+	Images *imageSky2;
+	// alokasi memmory untuk tekstur
+	imageSky2 = (Images *) malloc(sizeof(Images));
+	if (imageSky2 == NULL) {
+		printf("Error allocating space for image");//memory tidak cukup
+		exit(0);
+	}
+	//pic.bmp is a 64x64 picture
+	if (!ImageLoad("back.bmp", imageSky2)) {
+		exit(1);
+	}
+	return imageSky2;
+}
+//--------------
+
+//mengambil tekstur
+Images * loadTextureSky3() {
+	Images *imageSky3;
+	// alokasi memmory untuk tekstur
+	imageSky3 = (Images *) malloc(sizeof(Images));
+	if (imageSky3 == NULL) {
+		printf("Error allocating space for image");//memory tidak cukup
+		exit(0);
+	}
+	//pic.bmp is a 64x64 picture
+	if (!ImageLoad("left.bmp", imageSky3)) {
+		exit(1);
+	}
+	return imageSky3;
+}
+//--------------
+
+//mengambil tekstur
+Images * loadTextureSky4() {
+	Images *imageSky4;
+	// alokasi memmory untuk tekstur
+	imageSky4 = (Images *) malloc(sizeof(Images));
+	if (imageSky4 == NULL) {
+		printf("Error allocating space for image");//memory tidak cukup
+		exit(0);
+	}
+	//pic.bmp is a 64x64 picture
+	if (!ImageLoad("left.bmp", imageSky4)) {
+		exit(1);
+	}
+	return imageSky4;
+}
+//--------------
+
+//mengambil tekstur
+Images * loadTextureSky5() {
+	Images *imageSky5;
+	// alokasi memmory untuk tekstur
+	imageSky5 = (Images *) malloc(sizeof(Images));
+	if (imageSky5 == NULL) {
+		printf("Error allocating space for image");//memory tidak cukup
+		exit(0);
+	}
+	//pic.bmp is a 64x64 picture
+	if (!ImageLoad("up.bmp", imageSky5)) {
+		exit(1);
+	}
+	return imageSky5;
+}
+//--------------
+
+//mengambil tekstur
+Images * loadTextureSky6() {
+	Images *imageSky6;
+	// alokasi memmory untuk tekstur
+	imageSky6 = (Images *) malloc(sizeof(Images));
+	if (imageSky6 == NULL) {
+		printf("Error allocating space for image");//memory tidak cukup
+		exit(0);
+	}
+	//pic.bmp is a 64x64 picture
+	if (!ImageLoad("down.bmp", imageSky6)) {
+		exit(1);
+	}
+	return imageSky6;
+}
+//--------------
+
+//mengambil tekstur
+Images * loadTexture2() {
+	Images *image2;
+	// alokasi memmory untuk tekstur
+	image2 = (Images *) malloc(sizeof(Images));
+	if (image2== NULL) {
+		printf("Error allocating space for image");//memory tidak cukup
+		exit(0);
+	}
+	//pic.bmp is a 64x64 picture
+	if (!ImageLoad("biru.bmp", image2)) {
+		exit(1);
+	}
+	return image2;
+}
+//--------------
+
+void Draw_Skybox(float x, float y, float z, float width, float height, float length)
+{
+	// Center the Skybox around the given x,y,z position
+	x = x - width  / 2;
+	y = y - height / 2;
+	z = z - length / 2;
+
+
+	// Draw Front side
+	glBindTexture(GL_TEXTURE_2D, SkyboxTexture[0]);
+	glBegin(GL_QUADS);	
+		glTexCoord2f(1.0f, 0.0f); glVertex3f(x,		  y,		z+length);
+		glTexCoord2f(1.0f, 1.0f); glVertex3f(x,		  y+height, z+length);
+		glTexCoord2f(0.0f, 1.0f); glVertex3f(x+width, y+height, z+length); 
+		glTexCoord2f(0.0f, 0.0f); glVertex3f(x+width, y,		z+length);
+	glEnd();
+
+	// Draw Back side
+	glBindTexture(GL_TEXTURE_2D, SkyboxTexture[1]);
+	glBegin(GL_QUADS);		
+		glTexCoord2f(1.0f, 0.0f); glVertex3f(x+width, y,		z);
+		glTexCoord2f(1.0f, 1.0f); glVertex3f(x+width, y+height, z); 
+		glTexCoord2f(0.0f, 1.0f); glVertex3f(x,		  y+height,	z);
+		glTexCoord2f(0.0f, 0.0f); glVertex3f(x,		  y,		z);
+	glEnd();
+
+	// Draw Left side
+	glBindTexture(GL_TEXTURE_2D, SkyboxTexture[2]);
+	glBegin(GL_QUADS);		
+		glTexCoord2f(1.0f, 1.0f); glVertex3f(x,		  y+height,	z);	
+		glTexCoord2f(0.0f, 1.0f); glVertex3f(x,		  y+height,	z+length); 
+		glTexCoord2f(0.0f, 0.0f); glVertex3f(x,		  y,		z+length);
+		glTexCoord2f(1.0f, 0.0f); glVertex3f(x,		  y,		z);		
+	glEnd();
+
+	// Draw Right side
+	glBindTexture(GL_TEXTURE_2D, SkyboxTexture[3]);
+	glBegin(GL_QUADS);		
+		glTexCoord2f(0.0f, 0.0f); glVertex3f(x+width, y,		z);
+		glTexCoord2f(1.0f, 0.0f); glVertex3f(x+width, y,		z+length);
+		glTexCoord2f(1.0f, 1.0f); glVertex3f(x+width, y+height,	z+length); 
+		glTexCoord2f(0.0f, 1.0f); glVertex3f(x+width, y+height,	z);
+	glEnd();
+
+	// Draw Up side
+	glBindTexture(GL_TEXTURE_2D, SkyboxTexture[4]);
+	glBegin(GL_QUADS);		
+		glTexCoord2f(0.0f, 0.0f); glVertex3f(x+width, y+height, z);
+		glTexCoord2f(1.0f, 0.0f); glVertex3f(x+width, y+height, z+length); 
+		glTexCoord2f(1.0f, 1.0f); glVertex3f(x,		  y+height,	z+length);
+		glTexCoord2f(0.0f, 1.0f); glVertex3f(x,		  y+height,	z);
+	glEnd();
+
+	// Draw Down side
+	glBindTexture(GL_TEXTURE_2D, SkyboxTexture[5]);
+	glBegin(GL_QUADS);		
+		glTexCoord2f(0.0f, 0.0f); glVertex3f(x,		  y,		z);
+		glTexCoord2f(1.0f, 0.0f); glVertex3f(x,		  y,		z+length);
+		glTexCoord2f(1.0f, 1.0f); glVertex3f(x+width, y,		z+length); 
+		glTexCoord2f(0.0f, 1.0f); glVertex3f(x+width, y,		z);
+	glEnd();
+
+}
+
 //untuk di display
 void drawSceneTanah(Terrain *terrain, GLfloat r, GLfloat g, GLfloat b) {
 	//	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -324,16 +767,20 @@ void drawSceneTanah(Terrain *terrain, GLfloat r, GLfloat g, GLfloat b) {
 	 glLightfv(GL_LIGHT0, GL_DIFFUSE, lightColor0);
 	 glLightfv(GL_LIGHT0, GL_POSITION, lightPos0);
 	 */
+	 
+	
 	float scale = 500.0f / max(terrain->width() - 1, terrain->length() - 1);
 	glScalef(scale, scale, scale);
 	glTranslatef(-(float) (terrain->width() - 1) / 2, 0.0f,
 			-(float) (terrain->length() - 1) / 2);
 
 	glColor3f(r, g, b);
+	 //glBindTexture(GL_TEXTURE_2D, texture[0]);
 	for (int z = 0; z < terrain->length() - 1; z++) {
 		//Makes OpenGL draw a triangle at every three consecutive vertices
 		glBegin(GL_TRIANGLE_STRIP);
 		for (int x = 0; x < terrain->width(); x++) {
+            
 			Vec3f normal = terrain->getNormal(x, z);
 			glNormal3f(normal[0], normal[1], normal[2]);
 			glVertex3f(x, terrain->getHeight(x, z), z);
@@ -346,7 +793,24 @@ void drawSceneTanah(Terrain *terrain, GLfloat r, GLfloat g, GLfloat b) {
 
 }
 
-unsigned int LoadTextureFromBmpFile(char *filename);
+//unsigned int LoadTextureFromBmpFile(char *filename);
+//----
+/*Image * loadTexture() {
+	Image *image1;
+	// alokasi memmory untuk tekstur
+	image1 = (Image *) malloc(sizeof(Image));
+	if (image1 == NULL) {
+		printf("Error allocating space for image");
+		exit(0);
+	}
+	//pic.bmp is a 64x64 picture
+	if (!ImageLoad("wood.bmp", image1)) {
+		exit(1);
+	}
+	return image1;
+}*/
+//----
+
 
 void display(void) {
 	glClearStencil(0); //clear the stencil buffer
@@ -354,20 +818,19 @@ void display(void) {
 	glClearColor(0.0, 0.6, 0.8, 1);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT); //clear the buffers
 	glLoadIdentity();
-	gluLookAt(viewx, viewy, viewz, 0.0, 0.0, 5.0, 0.0, 1.0, 0.0);
-
-
-
-
+//	gluLookAt(viewx, viewy, viewz, 0.0, 0.0, 5.0, 0.0, 1.0, 0.0);
+	gluLookAt(viewx, viewy, viewz, 500.0, -50.0, 0.0, 0.0, 1.0, 0.0);
+	//gluLookAt( 0,1,4, 0,0,0, 0,1,0);
 
 	glPushMatrix();
-
-	//glBindTexture(GL_TEXTURE_3D, texture[0]);
+    //glEnable(GL_TEXTURE_2D);
+	//glBindTexture(GL_TEXTURE_2D, texture[0]);
 	drawSceneTanah(_terrain, 0.5f, 0.5f, 0.5f);
+	//glDisable(GL_TEXTURE_2D);
 	glPopMatrix();
-
+    //glBindTexture(GL_TEXTURE_2D, SkyboxTexture[5]);
 	glPushMatrix();
-
+    //glBindTexture(GL_TEXTURE_2D, texture[0]);
 	//glBindTexture(GL_TEXTURE_3D, texture[0]);
 	//drawSceneTanah(_terrainTanah, 0.7f, 0.2f, 0.1f);
 	//glPopMatrix();
@@ -375,44 +838,123 @@ void display(void) {
 	//glPushMatrix();
 
 	//glBindTexture(GL_TEXTURE_3D, texture[0]);
+	//glEnable(GL_TEXTURE_2D);
 	drawSceneTanah(_terrainAir, 0.0f, 0.2f, 0.5f);
+	//glDisable(GL_TEXTURE_2D);
 	glPopMatrix();
-	glPushMatrix();
+	//glPushMatrix();
 
 //		   glClear(GL_COLOR_BUFFER_BIT);
 		   //glColor3f(0.0, 1.0, 0.0);
 		   //glBegin(GL_LINES);
 			//	tree(0, -80, 20, 1.5, 10);
 		   //glEnd();
-		   glPopMatrix();
+		   //glPopMatrix();
 		   
+
+
+//-------------------//
+		   //pohon1
+glPushMatrix();
+glTranslatef(-70,-8,-100);    
+glScalef(0.5, 0.5, 0.5);
+//glRotatef(90,0,1,0);
+pohon_bind();
+glPopMatrix();
+
 		   //pohon2
 glPushMatrix();
-glTranslatef(35,0.5,-10);    
+glTranslatef(-40,-8,-100);    
 glScalef(0.5, 0.5, 0.5);
-glRotatef(90,0,1,0);
-pohon();
+//glRotatef(90,0,1,0);
+pohon_bind();
 glPopMatrix();
 
-//ranting1
-ranting();
 
-//ranting2
+
+
+//batas
 glPushMatrix();
-glScalef(1.5, 1.5, 1.5);
-glTranslatef(0,25,25);   
-glRotatef(250,1,0,0);
-ranting();
+glTranslatef(0, 0, 0);
+awan();
 glPopMatrix();
 
-//ranting3
+//batas2
 glPushMatrix();
-glScalef(1.8, 1.8, 1.8);
-glTranslatef(0,-6,21.5);   
-glRotatef(-55,1,0,0);
-ranting();
+glTranslatef(0, 0, -80);
+awan();
 glPopMatrix();
 
+//batas2
+glPushMatrix();
+glTranslatef(0, 0, -160);
+awan();
+glPopMatrix();
+
+//batas2
+glPushMatrix();
+glTranslatef(0, 0, -240);
+awan();
+glPopMatrix();
+
+
+
+
+
+//box1
+glPushMatrix();
+glEnable(GL_TEXTURE_2D);
+glBindTexture(GL_TEXTURE_2D, texture[0]);
+
+glScalef(7, 5, 5);
+glTranslatef(-5,1,10);   
+glRotatef(0,1,0,0);
+box();
+glDisable(GL_TEXTURE_2D);
+glPopMatrix();
+
+//box2
+glPushMatrix();
+glEnable(GL_TEXTURE_2D);
+glBindTexture(GL_TEXTURE_2D, texture[0]);
+
+glScalef(7, 5, 5);
+glTranslatef(-5,1,15);   
+glRotatef(0,1,0,0);
+box();
+glDisable(GL_TEXTURE_2D);
+glPopMatrix();
+
+//box2
+glPushMatrix();
+glEnable(GL_TEXTURE_2D);
+glBindTexture(GL_TEXTURE_2D, texture[0]);
+
+glScalef(7, 5, 5);
+glTranslatef(-5,1,20);   
+glRotatef(0,1,0,0);
+box();
+glDisable(GL_TEXTURE_2D);
+glPopMatrix();
+
+//obj.draw("data//1.obj");
+
+
+//obj.Draw();
+
+
+
+//skybox
+glEnable(GL_TEXTURE_2D);
+glBindTexture(GL_TEXTURE_2D, SkyboxTexture[0]);
+glBindTexture(GL_TEXTURE_2D, SkyboxTexture[1]);
+glBindTexture(GL_TEXTURE_2D, SkyboxTexture[2]);
+glBindTexture(GL_TEXTURE_2D, SkyboxTexture[3]);
+glBindTexture(GL_TEXTURE_2D, SkyboxTexture[4]);
+glBindTexture(GL_TEXTURE_2D, SkyboxTexture[5]);
+glTranslatef(0,0,25); 
+Draw_Skybox(0,10,0,300,500,400);	
+glDisable(GL_TEXTURE_2D);
 
 
 	glutSwapBuffers();
@@ -423,6 +965,8 @@ glPopMatrix();
 }
 
 void init(void) {
+//    glEnable(GL_TEXTURE_2D);
+    glDisable(GL_TEXTURE_2D);
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_LIGHTING);
 	glEnable(GL_LIGHT0);
@@ -437,9 +981,92 @@ void init(void) {
 	_terrain = loadTerrain("heightmap.bmp", 20);
 	//_terrainTanah = loadTerrain("heightmapTanah.bmp", 20);
 	_terrainAir = loadTerrain("heightmapAir.bmp", 20);
+	//freopen( "CON", "wt", stdout );
+    //freopen( "CON", "wt", stderr );
+	//obj.load("data//1.obj");
+	
+//	obj.Load("jjj.obj");
 
 	//binding texture
+	Images *image1 = loadTexture();
+	Images *image2 = loadTexture2();
+	
+	Images *imageSky1 = loadTextureSky1();
+	Images *imageSky2 = loadTextureSky2();
+	Images *imageSky3 = loadTextureSky3();
+	Images *imageSky4 = loadTextureSky4();
+	Images *imageSky5 = loadTextureSky5();
+	Images *imageSky6 = loadTextureSky6();
+	
+	
+	if (image1 == NULL) {
+		printf("Image was not returned from loadTexture\n");
+		exit(0);
+	}
+	//makeCheckImage();
 
+	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+
+	// Generate texture/ membuat texture
+	glGenTextures(2, texture);
+	//binding texture untuk membuat texture 2D
+	glBindTexture(GL_TEXTURE_2D, texture[0]);
+	//menyesuaikan ukuran textur ketika image lebih besar dari texture
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST); //
+	//menyesuaikan ukuran textur ketika image lebih kecil dari texture
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST); //
+	glTexImage2D(GL_TEXTURE_2D, 0, 3, image1->sizeX, image1->sizeY, 0, GL_RGB,GL_UNSIGNED_BYTE, image1->data);
+	
+	glBindTexture(GL_TEXTURE_2D, texture[6]);
+	//menyesuaikan ukuran textur ketika image lebih besar dari texture
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST); //
+	//menyesuaikan ukuran textur ketika image lebih kecil dari texture
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST); //
+	glTexImage2D(GL_TEXTURE_2D, 0, 3, image2->sizeX, image2->sizeY, 0, GL_RGB,GL_UNSIGNED_BYTE, image2->data);
+	
+	glGenTextures(6, SkyboxTexture);
+	//front
+	glBindTexture(GL_TEXTURE_2D, SkyboxTexture[0]);
+	//menyesuaikan ukuran textur ketika image lebih besar dari texture
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST); //
+	//menyesuaikan ukuran textur ketika image lebih kecil dari texture
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST); //
+	glTexImage2D(GL_TEXTURE_2D, 0, 3, imageSky1->sizeX, imageSky1->sizeY, 0, GL_RGB,GL_UNSIGNED_BYTE, imageSky1->data);
+	//back
+	glBindTexture(GL_TEXTURE_2D, SkyboxTexture[1]);
+	//menyesuaikan ukuran textur ketika image lebih besar dari texture
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST); //
+	//menyesuaikan ukuran textur ketika image lebih kecil dari texture
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST); //
+	glTexImage2D(GL_TEXTURE_2D, 0, 3, imageSky2->sizeX, imageSky2->sizeY, 0, GL_RGB,GL_UNSIGNED_BYTE, imageSky2->data);
+	//left
+	glBindTexture(GL_TEXTURE_2D, SkyboxTexture[2]);
+	//menyesuaikan ukuran textur ketika image lebih besar dari texture
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST); //
+	//menyesuaikan ukuran textur ketika image lebih kecil dari texture
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST); //
+	glTexImage2D(GL_TEXTURE_2D, 0, 3, imageSky3->sizeX, imageSky3->sizeY, 0, GL_RGB,GL_UNSIGNED_BYTE, imageSky3->data);
+	//right
+	glBindTexture(GL_TEXTURE_2D, SkyboxTexture[3]);
+	//menyesuaikan ukuran textur ketika image lebih besar dari texture
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST); //
+	//menyesuaikan ukuran textur ketika image lebih kecil dari texture
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST); //
+	glTexImage2D(GL_TEXTURE_2D, 0, 3, imageSky4->sizeX, imageSky4->sizeY, 0, GL_RGB,GL_UNSIGNED_BYTE, imageSky4->data);
+	//up
+	glBindTexture(GL_TEXTURE_2D, SkyboxTexture[4]);
+	//menyesuaikan ukuran textur ketika image lebih besar dari texture
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST); //
+	//menyesuaikan ukuran textur ketika image lebih kecil dari texture
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST); //
+	glTexImage2D(GL_TEXTURE_2D, 0, 3, imageSky5->sizeX, imageSky5->sizeY, 0, GL_RGB,GL_UNSIGNED_BYTE, imageSky5->data);
+	//down
+	glBindTexture(GL_TEXTURE_2D, SkyboxTexture[5]);
+	//menyesuaikan ukuran textur ketika image lebih besar dari texture
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST); //
+	//menyesuaikan ukuran textur ketika image lebih kecil dari texture
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST); //
+	glTexImage2D(GL_TEXTURE_2D, 0, 3, imageSky6->sizeX, imageSky6->sizeY, 0, GL_RGB,GL_UNSIGNED_BYTE, imageSky6->data);
 }
 
 static void kibor(int key, int x, int y) {
@@ -519,6 +1146,9 @@ void reshape(int w, int h) {
 	glMatrixMode(GL_MODELVIEW);
 }
 
+
+
+
 int main(int argc, char **argv) {
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_STENCIL | GLUT_DEPTH); //add a stencil buffer to the window
@@ -526,6 +1156,7 @@ int main(int argc, char **argv) {
 	glutInitWindowPosition(100, 100);
 	glutCreateWindow("Pelabuhan");
 	init();
+	
 
 	glutDisplayFunc(display);
 	glutIdleFunc(display);
@@ -536,7 +1167,8 @@ int main(int argc, char **argv) {
 
 	glLightfv(GL_LIGHT0, GL_SPECULAR, light_specular);
 	glLightfv(GL_LIGHT0, GL_POSITION, light_position);
-
+	
+    
 	glMaterialfv(GL_FRONT, GL_SPECULAR, mat_specular);
 	glMaterialfv(GL_FRONT, GL_SHININESS, high_shininess);
 	glColorMaterial(GL_FRONT, GL_DIFFUSE);
